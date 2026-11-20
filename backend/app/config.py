@@ -1,7 +1,16 @@
-"""运行配置：端口、跨域、运行环境。"""
+"""运行配置：端口、跨域、运行环境、分发产物目录。"""
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass, field
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+DEFAULT_OUTPUT_DIR = BASE_DIR / "var" / "output_distribution"
+
+
+def _output_data_dir() -> str:
+    return str(os.environ.get("OUTPUT_DATA_DIR") or DEFAULT_OUTPUT_DIR)
 
 
 @dataclass(frozen=True)
@@ -17,6 +26,8 @@ class Settings:
     )
     page_size_default: int = 20
     page_size_max: int = 200
+    output_data_dir: str = field(default_factory=_output_data_dir)
+
 
 
 settings = Settings()
